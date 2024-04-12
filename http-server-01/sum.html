@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <script>
+        let id_populateDiv;
+        let id_populateInterst;
+        async function populateDiv() {
+            const num1 = document.getElementById("num1").value;
+            const num2 = document.getElementById("num2").value;
+            const elem = document.getElementById("finalSum");
+            let sum = await fetch(
+                `https://sum-server.100xdevs.com/sum?a=${num1}&b=${num2}`
+            );
+            elem.innerText = await sum.text();
+        }
+
+        function debouncePopulateDiv() {
+            clearTimeout(id_populateDiv);
+            id_populateDiv = setTimeout(function () {
+                populateDiv();
+            }, 1000);
+        }
+
+        async function populateInterst() {
+            const principal = parseInt(
+                document.getElementById("principal").value
+            );
+            const rate = parseInt(document.getElementById("rate").value);
+            const time = parseInt(document.getElementById("time").value);
+
+            let res = await fetch(
+                `https://sum-server.100xdevs.com/interest?principal=${principal}&rate=${rate}&time=${time}`
+            );
+            let responseObj = await res.json();
+            document.getElementById("res_interest").innerText =
+                "interest : " + responseObj.interest;
+            document.getElementById("res_total").innerText =
+                "total : " + responseObj.total;
+
+            console.log(interest);
+        }
+
+        function debouncePopulateInterst() {
+            clearTimeout(id_populateInterst);
+            id_populateInterst = setTimeout(function () {
+                populateInterst();
+            }, 1000);
+        }
+    </script>
+    <body>
+        <div>
+            <div>
+                <label for="num1">num1</label>
+                <input oninput="debouncePopulateDiv()" id="num1" type="text" />
+            </div>
+            <br />
+            <div>
+                <label for="num2">num2</label>
+                <input oninput="debouncePopulateDiv()" id="num2" type="text" />
+            </div>
+            <br />
+            <!-- <button onclick="populateDiv()">Calculate sum</button> -->
+            <div id="finalSum"></div>
+        </div>
+        <hr />
+
+        <div>
+            <div>
+                <label for="principal">principal</label>
+                <input
+                    oninput="debouncePopulateInterst()"
+                    id="principal"
+                    type="text"
+                />
+            </div>
+            <br />
+            <div>
+                <label for="rate">rate</label>
+                <input
+                    oninput="debouncePopulateInterst()"
+                    id="rate"
+                    type="text"
+                />
+            </div>
+            <br />
+            <div>
+                <label for="time">time</label>
+                <input
+                    oninput="debouncePopulateInterst()"
+                    id="time"
+                    type="text"
+                />
+            </div>
+            <!-- <button onclick="populateDiv()">Calculate sum</button> -->
+            <div id="response">
+                <div id="res_interest"></div>
+                <div id="res_total"></div>
+            </div>
+        </div>
+    </body>
+</html>
