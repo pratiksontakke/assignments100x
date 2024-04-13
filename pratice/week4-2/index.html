@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <script>
+        function addTodo() {
+            const title = document.getElementById("title").value;
+            const description = document.getElementById("description").value;
+            const container = document.getElementById("container");
+            // title
+            let t_div = document.createElement("div");
+            t_div.innerText = title;
+            // description
+            let d_div = document.createElement("div");
+            d_div.innerText = description;
+
+            // button
+            let button = document.createElement("button");
+            button.innerText = "Done Todo";
+            // parent div
+            let p_div = document.createElement("div");
+            // have to put titile, desc and button into p_div;
+            p_div.append(t_div, d_div, button);
+            container.append(p_div);
+        }
+    </script>
+    <body>
+        <input type="text" id="title" placeholder="title" />
+        <br /><br />
+        <input type="text" id="description" placeholder="description" />
+        <br /><br />
+        <button onclick="addTodo()">Add todo</button>
+        <div id="container"></div>
+    </body>
+</html>
