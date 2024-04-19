@@ -3,13 +3,15 @@ import "./App.css";
 import Render from "./Render";
 import Todos from "./Todos";
 import CardWrapperOuter from "./CardWrapperOuter";
+import Memo from "./Memo";
 
 function App() {
     return (
         <div>
             {/* <Render /> */}
             {/* <Todos /> */}
-            <CardWrapperOuter />
+            {/* <CardWrapperOuter /> */}
+            <Memo />
         </div>
     );
 }
