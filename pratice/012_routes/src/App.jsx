@@ -3,13 +3,15 @@ import React, { Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Appbar from "./components/Appbar";
 import PropDrilling from "./components/PropDrilling";
+import PropDrillingRecoil from "./components/PropDrillingRecoil";
 const Landing = React.lazy(() => import("./components/Landing"));
 const Dashboard = React.lazy(() => import("./components/Dashboard"));
 function App() {
     return (
         <div>
-            <PropDrilling />
-            <br></br>
+            <PropDrillingRecoil />
+            {/* <PropDrilling /> */}
+            {/* <br></br>
             <BrowserRouter>
                 <Appbar />
                 <Routes>
@@ -30,7 +32,7 @@ function App() {
                         }
                     />
                 </Routes>
-            </BrowserRouter>
+            </BrowserRouter> */}
         </div>
     );
 }
