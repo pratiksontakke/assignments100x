@@ -15,6 +15,7 @@ main()
         console.log("Got error while connecting to mongoDB" + err);
     });
 
+// User
 const userSchema = new mongoose.Schema({
     username: String,
     firstName: String,
@@ -56,4 +57,25 @@ const updateUserBody = z.object({
 });
 
 const User = mongoose.model("User", userSchema);
-module.exports = { User, UserZod, updateUserBody };
+
+// Bank
+const BankSchema = mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
+    balance: {
+        type: Number,
+        required: true,
+    },
+});
+
+const BankZod = z.object({
+    userId: z.string(),
+    balance: z.number(),
+});
+
+const Bank = mongoose.model("Bank", BankSchema);
+
+module.exports = { User, UserZod, updateUserBody, Bank, BankZod };
