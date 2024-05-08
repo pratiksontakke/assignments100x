@@ -42,6 +42,7 @@ async function validateUser(req, res, next) {
         res.status(404).json({ message: "Invalid user data" });
     }
 }
+
 const getJwtToken = (username) => {
     return jwt.sign({ username }, JWT_SECRET);
 };

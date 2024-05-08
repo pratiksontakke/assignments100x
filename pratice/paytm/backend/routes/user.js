@@ -27,16 +27,26 @@ router.get("/bulk", authMiddleware, async (req, res) => {
     });
 });
 
-router.post("/", validateUser, async (req, res) => {
-    let user = await new User(req.body).save();
-    if (user) {
-        let token = getJwtToken(user.username);
-        res.status(200).json({
-            message: "User created successfully",
-            token: token,
-        });
-    } else {
-        res.status(404).send({ message: "User not saved" });
+router.post("/signIn", async (req, res) => {
+    try {
+        if (req.body.username && req.body.password) {
+            let user = await User.findOne({
+                username: req.body.username,
+                password: req.body.password,
+            });
+
+            if (user) {
+                let token = getJwtToken(req.body.username);
+                res.status(200).json({
+                    message: "Successfully sign in",
+                    token: token,
+                });
+            } else {
+                res.status(404).send({ message: "User not found" });
+            }
+        }
+    } catch (err) {
+        res.status(404).json({ message: "Invalid user data" });
     }
 });
 
@@ -56,25 +66,19 @@ router.put("/", authMiddleware, async (req, res) => {
     }
 });
 
-router.post("/signup", async (req, res) => {
+router.post("/signup", validateUser, async (req, res) => {
     let user = req.body;
     try {
-        UserZod.safeParse(user);
-        let userFromDB = await User.findOne({ username: user.username });
-        if (userFromDB) {
-            throw new Error("User already exists");
-        } else {
-            let userSaved = await User(user).save();
-            await Bank({
-                userId: userSaved,
-                balance: 1 + Math.random() * 10000,
-            }).save();
-            let token = getJwtToken(userSaved.username);
-            res.status(200).json({
-                message: "User created successfully",
-                token: token,
-            });
-        }
+        let userSaved = await User(user).save();
+        await Bank({
+            userId: userSaved,
+            balance: 1 + Math.random() * 10000,
+        }).save();
+        let token = getJwtToken(userSaved.username);
+        res.status(200).json({
+            message: "User created successfully",
+            token: token,
+        });
     } catch (err) {
         console.log(err);
         res.status(403).json({
